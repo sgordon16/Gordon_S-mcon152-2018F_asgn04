@@ -1,8 +1,9 @@
 
 public interface IRandomValueGenerator {
 	
-	public int getRandomNum();
 	public void setRandomNum(int x);
-	public int getRandomNumberInRange(int min, int max);
-
+	public int getRandomIntInRange(int min, int max);
+	public double getRandomDouble();
+	public void setRandomDouble(double d);
+	
 }
