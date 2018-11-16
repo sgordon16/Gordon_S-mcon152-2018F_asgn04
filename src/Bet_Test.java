@@ -1,6 +1,11 @@
-import static org.junit.Assert.*; 
-import org.junit. *;
 
+import org.junit.Test;
+
+import static org.junit.Assert. *;
+
+
+
+import org.junit.Before;
 
 public class Bet_Test {
 
@@ -8,51 +13,67 @@ public class Bet_Test {
 	static MockRandomValueGenerator rand = new MockRandomValueGenerator();
 	
 	@Before
-	void Before() {
+	public void Before() {
 		rand.setRandomNum(3);
 		rand.setRandomDouble(0.3);
 		bet = new Bet(0, rand);
 	}
 
 	@Test
-	void testCanBetTrue() {
+	public void testGetCurrentBalance() {
+		assertEquals(bet.currentBalance, bet.getCurrentBalance());
+	}
+	@Test
+	public void testAddMoney() {
+		bet.addMoney(100);
+		assertEquals(100, bet.currentBalance);
+	}
+	@Test
+	public void testCanBetTrue() {
 		assertTrue(bet.canBet(0));
 	}
 	
 	@Test
-	void testCanBetFalse() {
+	public void testCanBetFalse() {
 		assertFalse(bet.canBet(1));
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	void testAddMoneyThrowsIllegalArgumentException() {
+	public void testAddMoneyThrowsIllegalArgumentException() {
 		bet.addMoney(-1);
 	}
 	
-
+	@Test(expected = IllegalArgumentException.class)
+	public void testBetOnANumberThrowsIllegalArgumentException() {
+		assertEquals(1000, bet.betOnANumber(-100, 0, 10, 3));
+	}
 	@Test
-	void testBetOnANumberWins() {
+	public void testBetOnANumberWins() {
 		assertEquals(1000, bet.betOnANumber(100, 0, 10, 3));
 	}
 	
 	@Test
-	void testBetOnANumberLoses() {
+	public void testBetOnANumberLoses() {
 		assertEquals(-100,bet.betOnANumber(100, 0, 10, 4));
 	}
 
 	@Test(expected = NegativeProbabilityException.class)
-	void testBetOnProbabilityThrowsNegativeProbabilityException() throws NegativeProbabilityException {
+	public void testBetOnProbabilityThrowsNegativeProbabilityException() throws NegativeProbabilityException {
 		bet.betOnProbability(100, -0.2);
 	}
 	
+	@Test(expected = IllegalArgumentException.class)
+	public void testBetOnProbabilityThrowsIllegalArgumentException() throws NegativeProbabilityException  {
+		bet.betOnProbability(-100, 0.2);
+	}
 	@Test
-	void testBetOnProbabilityWins() throws NegativeProbabilityException {
+	public void testBetOnProbabilityWins() throws NegativeProbabilityException {
 		assertEquals(233, bet.betOnProbability(100, 0.3));
 	}
 	
 	@Test
-	void testBetOnProbabilityLoses() throws NegativeProbabilityException {
-		assertEquals(-100, bet.betOnProbability(100, 0.4));
+	public void testBetOnProbabilityLoses() throws NegativeProbabilityException {
+		assertEquals(-100, bet.betOnProbability(100, 0.2));
 	}
 
 }

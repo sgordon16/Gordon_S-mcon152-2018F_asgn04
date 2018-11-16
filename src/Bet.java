@@ -1,8 +1,8 @@
 
 public class Bet {
 	
-	private int minBalance;
-	private int currentBalance;
+	protected int minBalance;
+	protected int currentBalance;
 	private IRandomValueGenerator rand;
 
 	public Bet(int minBalance, IRandomValueGenerator rand) {
@@ -27,6 +27,9 @@ public class Bet {
 	}
 	public int betOnANumber(int amnt, int min, int max, int selectedNumber) {
 		
+		if(amnt < 0)
+			throw new IllegalArgumentException("Cannot bet negative ammounts");
+		
 		if(rand.getRandomIntInRange(min, max) != selectedNumber) {
 			currentBalance -= amnt;
 			return -amnt;
@@ -38,11 +41,13 @@ public class Bet {
 	}
 	public int betOnProbability(int amnt, double p) throws NegativeProbabilityException {
 		
+		if(amnt < 0)
+			throw new IllegalArgumentException("Cannot bet negative ammounts");
 		if(p < 0)
 			throw new NegativeProbabilityException();
 		if(rand.getRandomDouble() <= p) {
-			currentBalance += (Math.pow(p, -1) -1) * amnt;
-			return (int) (Math.pow(p, -1) -1) * amnt;
+			currentBalance += (int) ((Math.pow(p, -1) -1) * amnt);
+			return (int) ((Math.pow(p, -1) -1) * amnt);
 		}
 		else {
 			currentBalance -= amnt;
